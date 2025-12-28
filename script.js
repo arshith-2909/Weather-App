@@ -1,42 +1,37 @@
 async function getWeather() {
-    const apiKey = "6d6b56a598fe438b87e180549252812";
-    const city = document.getElementById("cityInput").value.trim(); // avoid spaces
+    const apiKey = "6d6b56a598fe438b87e180549252812"; // <-- WeatherAPI.com key
+    const city = document.getElementById("cityInput").value.trim();
 
     if (!city) {
         document.getElementById("error").innerHTML = "Please enter a city name!";
         return;
     }
 
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`;
 
-    try{
+    try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data); // <--- VERY IMPORTANT
+        console.log(data);
 
-        // If error from API
-        if (data.cod != 200) {
-            document.getElementById("error").innerHTML = data.message;
+        if (data.error) {
+            document.getElementById("error").innerHTML = data.error.message;
             document.getElementById("weatherBox").style.display = "none";
             return;
         }
 
-        // On success
         document.getElementById("error").innerHTML = "";
         document.getElementById("weatherBox").style.display = "block";
 
-        document.getElementById("cityName").innerHTML = data.name;
-        document.getElementById("temperature").innerHTML = data.main.temp + "°C";
-        document.getElementById("weatherDesc").innerHTML = data.weather[0].description;
-        document.getElementById("humidity").innerHTML = data.main.humidity + "%";
-        document.getElementById("wind").innerHTML = data.wind.speed + " km/h";
+        document.getElementById("cityName").innerHTML = data.location.name + ", " + data.location.country;
+        document.getElementById("temperature").innerHTML = data.current.temp_c + "°C";
+        document.getElementById("weatherDesc").innerHTML = data.current.condition.text;
+        document.getElementById("humidity").innerHTML = data.current.humidity + "%";
+        document.getElementById("wind").innerHTML = data.current.wind_kph + " km/h";
+        document.getElementById("weatherIcon").src = "https:" + data.current.condition.icon;
 
-        const icon = data.weather[0].icon;
-        document.getElementById("weatherIcon").src =
-        `https://openweathermap.org/img/wn/${icon}@2x.png`;
-
-    }catch(err){
+    } catch (err) {
         console.log(err);
-        document.getElementById("error").innerHTML = "Network Error!";
+        document.getElementById("error").innerHTML = "Network error!";
     }
 }
