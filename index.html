@@ -3,9 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+    <div class="container">
+        <h2>Weather App</h2>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button onclick="getWeather()">Search</button>
+        </div>
+
+        <div class="weather" id="weatherBox" style="display:none;">
+            <h3 id="cityName"></h3>
+            <img id="weatherIcon" width="100">
+            <h1 id="temperature"></h1>
+            <p id="weatherDesc"></p>
+            <div class="details">
+                <p>Humidity: <span id="humidity"></span></p>
+                <p>Wind Speed: <span id="wind"></span></p>
+            </div>
+        </div>
+
+        <p id="error"></p>
+    </div>
+
+<script src="script.js"></script>
 </body>
 </html>
